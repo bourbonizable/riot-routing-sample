@@ -15,11 +15,6 @@
             </div>
         </div>
     </div>
-    <script>
-        this.on('unmount', function() {
-            console.log('vegetable-index が unmount された')
-        })
-    </script>
     <style>
         h1 {
             margin-top: 0;

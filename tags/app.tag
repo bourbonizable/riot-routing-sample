@@ -16,8 +16,9 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="/#/vegetables">やさい</a></li>
-                    <li><a href="/#/fruits/">くだもの</a></li>
+                    <li><a href="/#/fruits">くだもの</a></li>
                     <li><a href="/#/meats">にく</a></li>
+					<li><a href="/#/github">GitHub</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -27,4 +28,26 @@
             <h1>Riotサンプル</h1>
         </div>
     </div>
+	<script>
+		this.state = riot.observable({
+			user: opts.user,
+			view: null
+		});
+
+		this.mountSubview = (data) => {
+			//update the state view prop
+			this.state.view = data.view;
+			// extend the data passed to this sub-view adding the state
+			data.state = this.state
+			console.log(data);
+			if (!this.state.user.isLogged) {
+				riot.route('/login', 'Login', true);
+				riot.mount('#content', 'login', data);
+			} else {
+				riot.mount('#content', data.view, data);
+			}
+		};
+		this.state.on('user::error', (err) => { console.log('error')});
+		this.state.on('user::logged', (...args) => { console.log('Hey loginUser')});
+	</script>
 </app>
