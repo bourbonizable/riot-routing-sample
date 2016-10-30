@@ -2,6 +2,7 @@ console.log('START');
 
 import riot from 'riot';
 import bootstrap from 'bootstrap';
+import NProgress from 'nprogress';
 
 import 'tags/app.tag!';
 import 'tags/vegetables/index.tag!';
@@ -11,6 +12,19 @@ import 'tags/fruits/detail.tag!';
 import 'tags/meats/index.tag!';
 
 riot.mount('app');
+
+riot.route.base('/')
+
+//const r = [
+//    { '/' : (...args) => riot.mount('#content', 'fruit-index')},
+//    { '/' : (...args) => riot.mount('#content', 'fruit-index')}
+//];
+//Object.keys(r).forEach((key) => {
+//    NProgress.start();
+//    r[key](args).then((response) => {
+//        NProgress.done();
+//    });
+//});
 
 // monitor whether the browser URL changes.
 // A new hash is typed into the location bar
@@ -24,7 +38,8 @@ riot.route('/', (...args) => {
     riot.mount('app');
 });
 
-riot.route('/fruits..', (...args) => {
+riot.route('/fruits/*', (...args) => {
+    console.log(args);
     riot.mount('#content', 'fruit-index');
 });
 riot.route('/meats', (...args) => {
@@ -33,6 +48,14 @@ riot.route('/meats', (...args) => {
 riot.route('/vegetables..', (...args) => {
     console.log('vegetable-index を mount します')
     riot.mount('#content', 'vegetable-index');
+});
+riot.route('/github', (...args) => {
+    fetch('https://api.github.com/users/technoweenie/repos').then(function(response){
+        return response.json();
+    }).then(function(json) {
+        self.items = json;
+        riot.mount('#content', 'github', { items: json});
+    });
 });
 
 var route = riot.route.create();
